@@ -1,0 +1,127 @@
+/* Reset y configuración base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.container {
+    min-height: 100vh;
+    width: 100vw;
+    background-image: url('assets/imagen1.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    position: relative;
+}
+
+/* Texto mágico "Abreme" */
+.magic-text {
+    position: relative;
+    z-index: 10;
+    animation: textGlow 2s ease-in-out infinite alternate;
+}
+
+.magic-text h1 {
+    font-family: 'Brush Script MT', cursive, serif;
+    font-size: 6rem;
+    font-weight: bold;
+    color: #FFFFFF;
+    letter-spacing: 5px;
+    text-align: center;
+    margin: 0;
+    animation: textFloat 4s ease-in-out infinite;
+    text-transform: uppercase;
+}
+
+@keyframes textGlow {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes textFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Carta flotante */
+.floating-card {
+    position: relative;
+    z-index: 10;
+    animation: levitate 3s ease-in-out infinite;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.floating-card:hover {
+    transform: scale(1.05);
+}
+
+.card-image {
+    max-width: 400px;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 15px 40px rgba(0, 0, 0, 0.3));
+    transition: transform 0.3s ease;
+}
+
+.floating-card:hover .card-image {
+    transform: scale(1.05);
+}
+
+/* Animación de levitación */
+@keyframes levitate {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Responsive para móvil */
+@media (max-width: 768px) {
+    .magic-text h1 {
+        font-size: 4.5rem;
+        letter-spacing: 4px;
+    }
+    
+    .card-image {
+        max-width: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .magic-text h1 {
+        font-size: 3.5rem;
+        letter-spacing: 3px;
+    }
+    
+    .card-image {
+        max-width: 280px;
+    }
+}

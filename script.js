@@ -630,129 +630,140 @@ document.addEventListener('DOMContentLoaded', function() {
             transition: opacity 2s ease-in-out;
         `;
         
-        // Crear la invitación
+        // Crear el marco dorado opulente
+        const frameImage = document.createElement('img');
+        frameImage.src = 'assets/un-marco-dorado-opulento-con-esquinas-ornamentales-bordea-fondo-de-textura-oscura-perfecto-para-las-invitaciones-certificados-o-385168344.png';
+        frameImage.alt = 'Marco dorado opulente';
+        frameImage.style.cssText = `
+            width: 90vw;
+            height: 90vh;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
+            position: relative;
+            z-index: 1;
+        `;
+
+        // Crear la invitación (contenido dentro del marco)
         const invitation = document.createElement('div');
         invitation.style.cssText = `
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7));
-            border: 3px solid #DAA520;
-            border-radius: 20px;
-            padding: 20px;
-            max-width: 95vw;
-            max-height: 95vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70vw;
+            height: 70vh;
+            background: transparent;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
             overflow-y: auto;
+            z-index: 2;
+            padding: 20px;
+        `;
+
+        // Crear el espejo pequeño en la parte superior central
+        const mirror = document.createElement('img');
+        mirror.src = 'assets/espejo.png';
+        mirror.alt = 'Espejo mágico';
+        mirror.style.cssText = `
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
         `;
         
-        // Título principal
-        const title = document.createElement('h1');
-        title.innerHTML = 'MIS <span style="color: #FFD700; text-shadow: 0 0 20px #FFD700;">15</span> AÑOS';
-        title.style.cssText = `
+        // Crear el nombre ARELY debajo del espejo - BLANCO
+        const nameTitle = document.createElement('h1');
+        nameTitle.textContent = 'ARELY';
+        nameTitle.style.cssText = `
             font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive;
-            font-size: 2.2rem;
-            color: #DAA520;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        `;
-        
-        // Nombre de la cumpleañera
-        const birthdayGirl = document.createElement('h2');
-        birthdayGirl.textContent = 'ARELY';
-        birthdayGirl.style.cssText = `
-            font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive;
-            font-size: 1.8rem;
+            font-size: 2.5rem;
             color: #FFFFFF;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-            margin-bottom: 20px;
+            margin: 0;
+            margin-top: 165px;
+            text-align: center;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             font-weight: bold;
         `;
-        
-        // Cita inspiracional
-        const quote = document.createElement('div');
-        quote.innerHTML = `
-            <div style="border-top: 2px solid #DAA520; border-bottom: 2px solid #DAA520; padding: 15px; margin: 15px 0;">
-                <p style="font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive; font-size: 1rem; color: #DAA520; font-style: italic; margin: 0; line-height: 1.4;">
-                    "El secreto es rodearse de personas que te hagan sonreír el corazón<br>
-                    y entonces, y solo entonces, estarás en el País de las Maravillas"
-                </p>
-            </div>
-        `;
-        
-        // Detalles del evento
+
+        // Crear los detalles del evento - SIN LÍNEAS AMARILLAS, MÁS ANCHO
         const eventDetails = document.createElement('div');
         eventDetails.style.cssText = `
-            background: rgba(218, 165, 32, 0.1);
-            border: 2px solid #DAA520;
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
+            padding: 25px;
+            margin: 1px auto;
+            backdrop-filter: blur(5px);
+            width: 95%;
         `;
-        
+
         const dateTime = document.createElement('div');
         dateTime.innerHTML = `
-            <div style="text-align: center; margin-bottom: 15px;">
-                <div style="font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive; font-size: 1.4rem; color: #DAA520; font-weight: bold; margin-bottom: 5px;">
+            <div style="text-align: center;">
+                <div style="font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive; font-size: 1.3rem; color: #FFFFFF; font-weight: bold; margin-bottom: 8px;">
                     El día Sábado 8 de
                 </div>
-                <div style="font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive; font-size: 1.4rem; color: #DAA520; font-weight: bold; margin-bottom: 10px;">
+                <div style="font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive; font-size: 1.3rem; color: #FFFFFF; font-weight: bold; margin-bottom: 15px;">
                     Noviembre 2025
                 </div>
-                <div style="border-top: 2px solid #DAA520; border-bottom: 2px solid #DAA520; padding: 8px; margin: 10px 0;">
-                    <div style="font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive; font-size: 1rem; color: #DAA520; font-weight: bold;">Lugar:</div>
-                    <div style="font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive; font-size: 0.9rem; color: #FFFFFF; line-height: 1.3; margin-top: 8px;">
+                <div style="padding: 10px; margin: 15px 0;">
+                    <div style="font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive; font-size: 1rem; color: #FFFFFF; font-weight: bold; margin-bottom: 8px;">Lugar:</div>
+                    <div style="font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive; font-size: 0.9rem; color: #FFFFFF; line-height: 1.4; margin-bottom: 8px;">
                         Centro de Eventos Vensai<br>
                         Av. Juan de la Rosa<br>
                         Nº2229, entre C. Ismael<br>
                         Céspedes y C. Yuqui
                     </div>
                 </div>
-                <div style="font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive; font-size: 1.2rem; color: #DAA520; font-weight: bold;">
+                <div style="font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive; font-size: 1.1rem; color: #FFFFFF; font-weight: bold;">
                     18:00 horas
                 </div>
             </div>
         `;
-        
+
         eventDetails.appendChild(dateTime);
-        
-        // Botones interactivos
+
+        // Crear los botones en una fila - MÁS PEQUEÑOS
         const buttonsContainer = document.createElement('div');
         buttonsContainer.style.cssText = `
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-wrap: wrap;
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 30px;
             padding: 15px;
-            background: rgba(218, 165, 32, 0.15);
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 15px;
-            border: 2px solid #DAA520;
-            min-height: 120px;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
         `;
-        
+
         const buttons = [
             { text: 'CÓMO LLEGAR', icon: '📍', color: '#4A90E2' },
             { text: 'CÓDIGO VESTIMENTA', icon: '👗', color: '#9B59B6' },
             { text: 'CRONOGRAMA', icon: '⏰', color: '#E67E22' }
         ];
-        
+
         buttons.forEach(buttonData => {
             const button = document.createElement('button');
             button.innerHTML = `${buttonData.icon}<br><span style="font-size: 0.6rem; font-weight: bold;">${buttonData.text}</span>`;
             button.style.cssText = `
                 background: linear-gradient(45deg, ${buttonData.color}, ${buttonData.color}dd);
-                border: 3px solid #DAA520;
+                border: 2px solid #DAA520;
                 border-radius: 50%;
-                width: 80px;
-                height: 80px;
+                width: 70px;
+                height: 70px;
                 color: #FFFFFF;
                 font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive;
-                font-size: 1.2rem;
+                font-size: 1rem;
                 cursor: pointer;
                 transition: all 0.3s ease;
                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
@@ -779,15 +790,15 @@ document.addEventListener('DOMContentLoaded', function() {
             
             buttonsContainer.appendChild(button);
         });
-        
-        // Agregar elementos a la invitación
-        invitation.appendChild(title);
-        invitation.appendChild(birthdayGirl);
-        invitation.appendChild(quote);
+
+        // Agregar elementos a la invitación en orden vertical
+        invitation.appendChild(mirror);
+        invitation.appendChild(nameTitle);
         invitation.appendChild(eventDetails);
         invitation.appendChild(buttonsContainer);
         
-        // Agregar invitación al contenedor
+        // Agregar marco e invitación al contenedor
+        invitationContainer.appendChild(frameImage);
         invitationContainer.appendChild(invitation);
         finalBackgroundOverlay.appendChild(invitationContainer);
         

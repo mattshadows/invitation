@@ -1,5 +1,37 @@
 // Esperar a que el DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', function() {
+    // Crear y reproducir música de fondo al cargar la página
+    const backgroundMusic = document.createElement('audio');
+    backgroundMusic.src = "assets/Alice's Theme (From Alice in WonderlandSoundtrack Version) (mp3cut.net).mp3";
+    backgroundMusic.loop = true;
+    backgroundMusic.volume = 0.3; // Volumen moderado
+    backgroundMusic.preload = 'auto';
+    
+    // Agregar música al body
+    document.body.appendChild(backgroundMusic);
+    
+    // Variable para controlar si la música ya se inició
+    let musicStarted = false;
+    
+    // Función para iniciar música
+    function startMusic() {
+        if (!musicStarted) {
+            backgroundMusic.currentTime = 7; // Saltar los primeros 5 segundos
+            backgroundMusic.play().then(() => {
+                console.log('Música iniciada correctamente (saltando primeros 5 segundos)');
+                musicStarted = true;
+            }).catch(e => console.log('Error al reproducir música:', e));
+        }
+    }
+    
+    // Intentar reproducir música automáticamente (probablemente fallará)
+    backgroundMusic.play().catch(error => {
+        console.log('Música en espera - se reproducirá en el primer clic');
+        // Agregar listener para cualquier clic en la página
+        document.addEventListener('click', startMusic, { once: true });
+        // También agregar listener para cualquier tecla
+        document.addEventListener('keydown', startMusic, { once: true });
+    });
     const envelope = document.getElementById('envelope');
     const invitation = document.getElementById('invitation');
     const container = document.querySelector('.container');
@@ -9,6 +41,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function openEnvelope() {
         if (!isOpen) {
             isOpen = true;
+            
+            // Ocultar el indicador de tecla (DESACTIVADO TEMPORALMENTE)
+            // const skipHint = document.querySelector('.skip-hint');
+            // if (skipHint) {
+            //     skipHint.style.display = 'none';
+            // }
             
             // Crear efecto de humo
             createSmokeEffect();
@@ -596,6 +634,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Función para mostrar el fondo final
     function showFinalBackground() {
+
         // Crear overlay para el fondo final
         const finalBackgroundOverlay = document.createElement('div');
         finalBackgroundOverlay.style.cssText = `
@@ -643,6 +682,19 @@ document.addEventListener('DOMContentLoaded', function() {
             z-index: 1;
         `;
 
+        // Crear canvas de Processing para animaciones
+        const processingCanvas = document.createElement('canvas');
+        processingCanvas.id = 'processing-canvas';
+        processingCanvas.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 4;
+            pointer-events: none;
+        `;
+
         // Crear la invitación (contenido dentro del marco)
         const invitation = document.createElement('div');
         invitation.style.cssText = `
@@ -677,56 +729,135 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Crear el nombre ARELY debajo del espejo - BLANCO
         const nameTitle = document.createElement('h1');
-        nameTitle.textContent = 'ARELY';
+        nameTitle.textContent = 'Arely';
         nameTitle.style.cssText = `
-            font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive;
-            font-size: 2.5rem;
+            font-family: 'MedievalSharp', 'Playfair Display', 'Times New Roman', cursive;
+            font-size: 3.5rem;
             color: #FFFFFF;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
             margin: 0;
-            margin-top: 165px;
+            margin-top: 175px;
             text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-weight: bold;
+            text-transform: none;
+            letter-spacing: 2px;
+            font-weight: normal;
+            font-style: normal;
         `;
 
+        // Crear frase sutil debajo de Arely
+        const subtlePhrase = document.createElement('div');
+        subtlePhrase.innerHTML = `
+            "El secreto
+            es rodearte de personas que te hagan sonreír el corazón.
+            Entonces, y solo entonces, estarás en el País de las Maravillas."
+        `;
+        subtlePhrase.style.cssText = `
+            font-family: 'MedievalSharp', 'Playfair Display', 'Times New Roman', cursive;
+            font-size: 0.6rem;
+            color: #FFFFFF;
+            font-weight: normal;
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 0;
+            font-style: italic;
+            opacity: 0.9;
+            z-index: 10;
+            position: relative;
+            line-height: 1.4;
+        `;
         // Crear los detalles del evento - SIN LÍNEAS AMARILLAS, MÁS ANCHO
         const eventDetails = document.createElement('div');
         eventDetails.style.cssText = `
             background: rgba(0, 0, 0, 0.3);
             border-radius: 15px;
-            padding: 25px;
+            padding: 20px;
             margin: 1px auto;
             backdrop-filter: blur(5px);
-            width: 95%;
+            width: 100%;
         `;
 
         const dateTime = document.createElement('div');
         dateTime.innerHTML = `
             <div style="text-align: center;">
-                <div style="font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive; font-size: 1.3rem; color: #FFFFFF; font-weight: bold; margin-bottom: 8px;">
-                    El día Sábado 8 de
-                </div>
-                <div style="font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive; font-size: 1.3rem; color: #FFFFFF; font-weight: bold; margin-bottom: 15px;">
-                    Noviembre 2025
-                </div>
-                <div style="padding: 10px; margin: 15px 0;">
-                    <div style="font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive; font-size: 1rem; color: #FFFFFF; font-weight: bold; margin-bottom: 8px;">Lugar:</div>
-                    <div style="font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive; font-size: 0.9rem; color: #FFFFFF; line-height: 1.4; margin-bottom: 8px;">
-                        Centro de Eventos Vensai<br>
-                        Av. Juan de la Rosa<br>
-                        Nº2229, entre C. Ismael<br>
-                        Céspedes y C. Yuqui
+                <!-- Fecha y Hora juntas -->
+                <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 10px;">
+                    <!-- Fecha -->
+                    <div style="text-align: center;">
+                        <div style="font-family: 'MedievalSharp', 'Playfair Display', 'Times New Roman', cursive; font-size: 1.8rem; color: #FFFFFF; font-weight: bold; line-height: 1; font-style: normal;">
+                            8
+                        </div>
+                        <div style="font-family: 'MedievalSharp', 'Playfair Display', 'Times New Roman', cursive; font-size: 1.2rem; color: #FFFFFF; font-weight: normal; font-style: normal;">
+                            NOVIEMBRE
+                        </div>
+                        <div style="font-family: 'MedievalSharp', 'Playfair Display', 'Times New Roman', cursive; font-size: 1.0rem; color: #FFFFFF; font-weight: normal; font-style: normal; margin-top: 2px;">
+                            2025
+                        </div>
                     </div>
-                </div>
-                <div style="font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive; font-size: 1.1rem; color: #FFFFFF; font-weight: bold;">
-                    18:00 horas
+                    
+                    <!-- Gato como separador -->
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <div style="width: 70px; height: auto; opacity: 0.9; filter: brightness(1.2); position: relative; animation: levitar 3s ease-in-out infinite, balancear 4s ease-in-out infinite;">
+                            <img src="assets/gatosvg.svg" alt="Gato" style="width: 100%; height: auto;">
+                            <!-- Ojos animados superpuestos -->
+                            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">
+                                <!-- Ojo izquierdo - ajusta estas posiciones -->
+                                <div style="position: absolute; top: 15%; left: 25%; width: 10px; height: 10px; background: #000; border-radius: 50%; animation: parpadear 4s ease-in-out infinite;"></div>
+                                <!-- Ojo derecho - ajusta estas posiciones -->
+                                <div style="position: absolute; top: 15%; left: 65%; width: 10px; height: 10px; background: #000; border-radius: 50%; animation: parpadear 4s ease-in-out infinite;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hora -->
+                    <div style="text-align: center;">
+                        <div style="font-family: 'MedievalSharp', 'Playfair Display', 'Times New Roman', cursive; font-size: 1.8rem; color: #FFFFFF; font-weight: bold; line-height: 1; font-style: normal;">
+                            18:00
+                        </div>
+                        <div style="font-family: 'MedievalSharp', 'Playfair Display', 'Times New Roman', cursive; font-size: 1.2rem; color: #FFFFFF; font-weight: normal; font-style: normal;">
+                            HORAS
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
 
         eventDetails.appendChild(dateTime);
+
+        // Crear el texto del lugar encima de los botones
+        const lugarContainer = document.createElement('div');
+        lugarContainer.style.cssText = `
+            text-align: center;
+            margin: 15px 0 10px 0;
+        `;
+        
+        const lugarTitle = document.createElement('div');
+        lugarTitle.style.cssText = `
+            font-family: 'MedievalSharp', 'Playfair Display', 'Times New Roman', cursive;
+            font-size: 1.2rem;
+            color: #FFFFFF;
+            font-weight: normal;
+            margin-bottom: 8px;
+        `;
+        lugarTitle.textContent = 'Lugar:';
+        
+        const lugarText = document.createElement('div');
+        lugarText.style.cssText = `
+            font-family: 'MedievalSharp', 'Playfair Display', 'Times New Roman', cursive;
+            font-size: 0.7rem;
+            color: #FFFFFF;
+            line-height: 1.3;
+            font-style: normal;
+            letter-spacing: 0.5px;
+        `;
+        lugarText.innerHTML = `
+            Centro de Eventos Vensai<br>
+            Av. Juan de la Rosa
+            Nº2229, entre C. Ismael
+            Céspedes y C. Yuqui
+        `;
+        
+        lugarContainer.appendChild(lugarTitle);
+        lugarContainer.appendChild(lugarText);
+        eventDetails.appendChild(lugarContainer);
 
         // Crear los botones en una fila - MÁS PEQUEÑOS
         const buttonsContainer = document.createElement('div');
@@ -734,58 +865,65 @@ document.addEventListener('DOMContentLoaded', function() {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
             margin-top: 30px;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            border: 1px solid #333333;
             position: absolute;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             width: 90%;
+            backdrop-filter: blur(10px);
         `;
 
         const buttons = [
-            { text: 'CÓMO LLEGAR', icon: '📍', color: '#4A90E2' },
-            { text: 'CÓDIGO VESTIMENTA', icon: '👗', color: '#9B59B6' },
-            { text: 'CRONOGRAMA', icon: '⏰', color: '#E67E22' }
+            { text: 'CÓMO LLEGAR', icon: '📍', color: '#000000' },
+            { text: 'CÓDIGO VESTIMENTA', icon: '👗', color: '#000000' },
+            { text: 'CRONOGRAMA', icon: '⏰', color: '#000000' }
         ];
 
         buttons.forEach(buttonData => {
             const button = document.createElement('button');
             button.innerHTML = `${buttonData.icon}<br><span style="font-size: 0.6rem; font-weight: bold;">${buttonData.text}</span>`;
             button.style.cssText = `
-                background: linear-gradient(45deg, ${buttonData.color}, ${buttonData.color}dd);
-                border: 2px solid #DAA520;
+                background: #000000;
+                border: 2px solid #333333;
                 border-radius: 50%;
-                width: 70px;
-                height: 70px;
+                width: 80px;
+                height: 80px;
                 color: #FFFFFF;
-                font-family: 'Papyrus', 'Chalkduster', 'Marker Felt', fantasy, cursive;
-                font-size: 1rem;
+                font-family: 'Arial', sans-serif;
+                font-size: 1.5rem;
                 cursor: pointer;
                 transition: all 0.3s ease;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
                 text-align: center;
-                margin: 5px;
+                margin: 2px;
                 position: relative;
                 z-index: 1;
                 flex-shrink: 0;
+                overflow: hidden;
             `;
             
             button.addEventListener('mouseenter', () => {
                 button.style.transform = 'scale(1.1)';
-                button.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.4)';
+                button.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.8)';
+                button.style.borderColor = '#DAA520';
+                button.style.background = '#111111';
             });
             
             button.addEventListener('mouseleave', () => {
                 button.style.transform = 'scale(1)';
-                button.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.3)';
+                button.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.6)';
+                button.style.borderColor = '#333333';
+                button.style.background = '#000000';
             });
             
             buttonsContainer.appendChild(button);
@@ -794,13 +932,25 @@ document.addEventListener('DOMContentLoaded', function() {
         // Agregar elementos a la invitación en orden vertical
         invitation.appendChild(mirror);
         invitation.appendChild(nameTitle);
+        invitation.appendChild(subtlePhrase);
         invitation.appendChild(eventDetails);
         invitation.appendChild(buttonsContainer);
         
-        // Agregar marco e invitación al contenedor
+        // Agregar marco, invitación y canvas de Processing al contenedor
         invitationContainer.appendChild(frameImage);
         invitationContainer.appendChild(invitation);
+        invitationContainer.appendChild(processingCanvas);
         finalBackgroundOverlay.appendChild(invitationContainer);
+
+        // Inicializar animaciones de Processing después de que aparezca el marco
+        setTimeout(() => {
+            console.log('Inicializando animaciones de Processing...');
+            // Asegurar que el canvas tenga el tamaño correcto
+            processingCanvas.width = invitationContainer.offsetWidth;
+            processingCanvas.height = invitationContainer.offsetHeight;
+            console.log('Tamaño del canvas:', processingCanvas.width, 'x', processingCanvas.height);
+            initializeProcessingAnimations(processingCanvas);
+        }, 2000);
         
         // Agregar al body
         document.body.appendChild(finalBackgroundOverlay);
@@ -820,9 +970,46 @@ document.addEventListener('DOMContentLoaded', function() {
     envelope.addEventListener('click', function(e) {
         e.stopPropagation();
         if (!isOpen) {
+            // Iniciar música cuando se hace clic en el sobre
+            startMusic();
             openEnvelope();
         }
     });
+    
+    // Event listener para la tecla "a" - DESACTIVADO TEMPORALMENTE
+    // document.addEventListener('keydown', function(e) {
+    //     if (e.key.toLowerCase() === 'a' && !isOpen) {
+    //         e.preventDefault();
+    //         console.log('Tecla "a" presionada - saltando directamente a la invitación');
+    //         // Iniciar música cuando se presiona "a"
+    //         startMusic();
+    //         skipToInvitation();
+    //     }
+    // });
+    
+    // Función para saltar directamente a la invitación
+    function skipToInvitation() {
+        if (!isOpen) {
+            isOpen = true;
+            
+            // Ocultar el indicador de tecla (DESACTIVADO TEMPORALMENTE)
+            // const skipHint = document.querySelector('.skip-hint');
+            // if (skipHint) {
+            //     skipHint.style.display = 'none';
+            // }
+            
+            // Limpiar cualquier elemento existente
+            const existingElements = document.querySelectorAll('.smoke-container, .black-overlay, .face-container, .new-background-overlay, .final-background-overlay');
+            existingElements.forEach(element => {
+                if (element.parentNode) {
+                    element.parentNode.removeChild(element);
+                }
+            });
+            
+            // Ir directamente a la vista final
+            showFinalBackground();
+        }
+    }
     
     // Agregar animación CSS para el botón
     const buttonStyle = document.createElement('style');
@@ -891,4 +1078,259 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     `;
     document.head.appendChild(style);
+    
+    // Función para inicializar animaciones de Processing
+    function initializeProcessingAnimations(canvas) {
+        // Verificar que Processing esté disponible
+        if (typeof Processing === 'undefined') {
+            console.error('Processing.js no está cargado');
+            return;
+        }
+        
+        // Crear instancia de Processing directamente
+        console.log('Creando instancia de Processing...');
+        const processingInstance = new Processing(canvas, function(p) {
+            console.log('Processing setup ejecutándose...');
+                    // Variables para el espejo (DESHABILITADAS)
+                    // let mirrorScale = 0;
+                    // let mirrorRotation = 0;
+                    // let mirrorAlpha = 0;
+                    // let mirrorAnimating = true;
+
+                    // Variables para la escritura de "ARELY" (DESHABILITADAS)
+                    // let letters = ["A", "R", "E", "L", "Y"];
+                    // let currentLetter = 0;
+                    // let letterDelay = 0;
+                    // let writingComplete = false;
+                    // let letterX = [];
+                    // let letterY = [];
+                    // let letterScale = [];
+                    // let letterGlow = [];
+
+                    // Variables para los botones (DESHABILITADAS)
+                    // let buttonVisible = [false, false, false];
+                    // let buttonScale = [0, 0, 0];
+                    // let buttonRotation = [0, 0, 0];
+                    // let buttonDelay = 0;
+
+                    // Variables para las partículas mágicas
+                    let particles = [];
+                    let particleCount = 25; // Más partículas
+
+                    // Clase para las partículas
+                    class Particle {
+                        constructor(startX, startY) {
+                            this.x = startX;
+                            this.y = startY;
+                            this.vx = p.random(-3, 3); // Mayor dispersión horizontal
+                            this.vy = p.random(-4, -1); // Mayor dispersión vertical
+                            this.maxLife = p.random(80, 150); // Vida más larga
+                            this.life = this.maxLife;
+                            this.particleColor = p.color(255, 215, 0, 150);
+                            this.size = p.random(3, 8); // Partículas más grandes
+                        }
+
+                        update() {
+                            this.x += this.vx;
+                            this.y += this.vy;
+                            this.life--;
+
+                            // Movimiento más orgánico y amplio
+                            this.vx += p.random(-0.2, 0.2);
+                            this.vy += p.random(-0.1, 0.1);
+
+                            // Límites más amplios para mayor dispersión
+                            this.vx = p.constrain(this.vx, -4, 4);
+                            this.vy = p.constrain(this.vy, -5, 2);
+                        }
+
+                        display() {
+                            p.pushMatrix();
+                            p.translate(this.x, this.y);
+
+                            let alpha = p.map(this.life, 0, this.maxLife, 0, 255);
+                            p.fill(p.red(this.particleColor), p.green(this.particleColor), p.blue(this.particleColor), alpha);
+                            p.noStroke();
+
+                            p.beginShape();
+                            for(let i = 0; i < 5; i++) {
+                                let angle = p.map(i, 0, 5, 0, p.TWO_PI);
+                                let radius1 = this.size;
+                                let radius2 = this.size * 0.4;
+                                let x1 = p.cos(angle) * radius1;
+                                let y1 = p.sin(angle) * radius1;
+                                let x2 = p.cos(angle + p.PI/5) * radius2;
+                                let y2 = p.sin(angle + p.PI/5) * radius2;
+                                p.vertex(x1, y1);
+                                p.vertex(x2, y2);
+                            }
+                            p.endShape(p.CLOSE);
+
+                            p.fill(255, 255, 255, alpha * 0.3);
+                            p.ellipse(0, 0, this.size * 0.5, this.size * 0.5);
+
+                            p.popMatrix();
+                        }
+
+                        isDead() {
+                            return this.life <= 0;
+                        }
+                    }
+
+                    p.setup = function() {
+                        p.size(canvas.width, canvas.height);
+                        p.smooth();
+
+                        // Inicialización de letras deshabilitada
+                        // for(let i = 0; i < 5; i++) {
+                        //     letterX[i] = p.width/2 + (i - 2) * 60;
+                        //     letterY[i] = p.height/2 + 50;
+                        //     letterScale[i] = 0;
+                        //     letterGlow[i] = 0;
+                        // }
+                    };
+
+                    p.draw = function() {
+                        p.background(0, 0, 0, 0);
+
+                        updateParticles();
+                        // animateMirror(); // DESHABILITADO
+                        // animateWriting(); // DESHABILITADO
+                        // animateButtons(); // DESHABILITADO
+                    };
+
+                    // function animateMirror() {
+                    //     if(mirrorScale < 1.0) {
+                    //         mirrorScale += 0.05;
+                    //         mirrorScale = p.constrain(mirrorScale, 0, 1);
+                    //     }
+
+                    //     mirrorRotation += 0.02;
+
+                    //     if(mirrorAlpha < 255) {
+                    //         mirrorAlpha += 8;
+                    //         mirrorAlpha = p.constrain(mirrorAlpha, 0, 255);
+                    //     }
+
+                    //     p.pushMatrix();
+                    //     p.translate(p.width/2, 100);
+                    //     p.scale(mirrorScale);
+                    //     p.rotate(p.sin(mirrorRotation) * 0.1);
+
+                    //     let glow = p.sin(p.frameCount * 0.1) * 0.3 + 0.7;
+                    //     p.fill(255, 215, 0, mirrorAlpha * glow * 0.3);
+                    //     p.noStroke();
+                    //     p.ellipse(0, 0, 200, 200);
+
+                    //     p.fill(255, 255, 255, mirrorAlpha);
+                    //     p.stroke(255, 215, 0, mirrorAlpha);
+                    //     p.strokeWeight(3);
+                    //     p.ellipse(0, 0, 180, 180);
+
+                    //     p.popMatrix();
+
+                    //     if(mirrorScale >= 1.0 && mirrorAlpha >= 255) {
+                    //         mirrorAnimating = false;
+                    //     }
+                    // }
+
+                    // function animateWriting() {
+                    //     if(letterDelay > 0) {
+                    //         letterDelay--;
+                    //         return;
+                    //     }
+
+                    //     if(currentLetter < letters.length) {
+                    //         letterScale[currentLetter] += 0.1;
+                    //         letterScale[currentLetter] = p.constrain(letterScale[currentLetter], 0, 1);
+
+                    //         letterGlow[currentLetter] = p.sin(p.frameCount * 0.2) * 0.5 + 0.5;
+
+                    //         p.pushMatrix();
+                    //         p.translate(letterX[currentLetter], letterY[currentLetter]);
+                    //         p.scale(letterScale[currentLetter]);
+
+                    //         // Brillo dorado de fondo
+                    //         p.fill(255, 215, 0, 255 * letterGlow[currentLetter] * 0.8);
+                    //         p.textSize(80);
+                    //         p.textAlign(p.CENTER, p.CENTER);
+                    //         p.text(letters[currentLetter], 0, 0);
+
+                    //         // Letra principal blanca
+                    //         p.fill(255, 255, 255, 255);
+                    //         p.textSize(80);
+                    //         p.text(letters[currentLetter], 0, 0);
+
+                    //         p.popMatrix();
+
+                    //         if(letterScale[currentLetter] >= 1.0) {
+                    //             currentLetter++;
+                    //             letterDelay = 20;
+                    //         }
+                    //     } else {
+                    //         writingComplete = true;
+                    //     }
+                    // }
+
+                    function animateButtons() {
+                        if(writingComplete && buttonDelay > 0) {
+                            buttonDelay--;
+                            return;
+                        }
+
+                        for(let i = 0; i < 3; i++) {
+                            if(!buttonVisible[i] && buttonDelay <= 0) {
+                                buttonVisible[i] = true;
+                                buttonDelay = 30;
+                            }
+
+                            if(buttonVisible[i]) {
+                                if(buttonScale[i] < 1.0) {
+                                    buttonScale[i] += 0.08;
+                                    buttonScale[i] = p.constrain(buttonScale[i], 0, 1);
+                                }
+
+                                buttonRotation[i] += 0.05;
+
+                                p.pushMatrix();
+                                p.translate(p.width/2 + (i - 1) * 120, p.height - 100);
+                                p.scale(buttonScale[i]);
+                                p.rotate(p.sin(buttonRotation[i]) * 0.1);
+
+                                let bounce = p.sin(buttonScale[i] * p.PI) * 0.2;
+                                p.translate(0, -bounce * 20);
+
+                                p.fill(100 + i * 50, 150, 200 + i * 20);
+                                p.stroke(255, 215, 0);
+                                p.strokeWeight(2);
+                                p.ellipse(0, 0, 70, 70);
+
+                                p.fill(255, 255, 255, 100);
+                                p.ellipse(-15, -15, 20, 20);
+
+                                p.popMatrix();
+                            }
+                        }
+                    }
+
+                    function updateParticles() {
+                        if(p.random(1) < 0.15 && particles.length < particleCount) {
+                            // Partículas desde múltiples puntos para mayor dispersión
+                            let startX = p.random(-100, p.width + 100); // Fuera de los bordes
+                            let startY = p.height + p.random(0, 100);
+                            particles.push(new Particle(startX, startY));
+                        }
+
+                        for(let i = particles.length - 1; i >= 0; i--) {
+                            let particle = particles[i];
+                            particle.update();
+                            particle.display();
+
+                            if(particle.isDead()) {
+                                particles.splice(i, 1);
+                            }
+                        }
+                    }
+                });
+    }
 });
